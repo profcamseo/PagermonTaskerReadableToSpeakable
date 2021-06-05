@@ -20,7 +20,6 @@ var jobLookupTable = {
   "YO ":" Year Old ",
   "INTERNAL / PERIPHERAL ONLY":"INTERNAL, PERIPHERAL ONLY",
   "OTHER / UNDEFINED INCIDENT":"UNDEFINED INCIDENT",
-  "VEH INTO BUILDING":"",
 };
 
 //FUNCTIONS
@@ -31,16 +30,11 @@ function cleanAddressFunction () {
 
 //INPUT VARIABLES
 
-var input01 = "F210412626 NITH4 RESCC1 * TRUCK ROLLOVER ACCIDENT - POSS PERSON TRAPPED THURLOWS RD SHADY CREEK SVSE 6768 H9 (176815) CNITH CYGON WGUL1 [WGUL]"
-var input02 = "F210412023 NSW1 RESCC1 * CAR ACCIDENT - POSS PERSON TRAPPED/FIRE CNR ALCHERINGA DR/GOL GOL NORTH RD GOL GOL (NSW) SVNW 4276 D6 (136193) MDRA1 [MDRA]"
-var input03 = "RYEA2 RESCC1 * CAR ACCIDENT - POSS PERSON TRAPPED 2015 PT NEPEAN RD TOOTGAROOK /ROMNEY AV //LAURA ST M 169 A4 (116508) AFPR CRYEA P95 SORR1 F210412210 [SORR]"
-var input04 = "S210450400 CASE - ASSIST AMBULANCE - SES TO ASSIST AV WITH 85YO F PT - PROCEED CODE 3 - 98 HARGRAVES ST CASTLEMAINE /CAMPBELL ST //DOVETON ST SVC 8135 G6 (528946) [CASE]"
-var input04 = "S210450393 - RESCUE / TRAPPED PERSONS - FEMALE WITH LEG TRAPPED IN BOULDER AT SQUEEZE TEST - CENTENARY PARK ACCESS TRK ARAPILES SVSW 8467 D7 (754318) [STAW]"
-var input05 = "S201251487 CHEL - RESCUE PERSONS - VEHICLE INTO STRUCTURE - CAR INTO BUILDING - POSS TRAPPED - 2 / 42 BAY ST MORDIALLOC /GEORGE ST //ROYAL PDE M 87 D11 (316923) [CHEL]"
+var input01 = "S123456789 ABCD - RESCUE PERSONS - VEHICLE INTO STRUCTURE - CAR INTO BUILDING - POSS TRAPPED - 1 TEST ST SUBURB /TEST ST //TEST PDE M 12 A12 (123456) [ABCD]"
 
-//Code
+//SAYABLE CONVERSION SCRIPT 
 
-var pagerEmergencyMessage = input05;
+var pagerEmergencyMessage = input01;
 
 if (pagerEmergencyMessage.match(/(S[0-9]{9,}).*/)) {
   output00 = pagerEmergencyMessage.replace(/(S[0-9]{9,} [a-zA-Z]{4,} - )/, "");}
@@ -48,17 +42,13 @@ else if (pagerEmergencyMessage.match(/(F[0-9]{9,}).*/)){
   output00 = pagerEmergencyMessage.replace(/(F[0-9]{9,}.*\* )/, "");}
 else {
   output00 = pagerEmergencyMessage.replace(/(.*\*)/, "");}
-//console.log(output00);
 output01 = output00.replace(/\[.*\]/, "");
 output02 = output01.split(/ M |SVSE|SVC|SVNE|SVNW|SVSW/);
-//console.log(output02);
 output03 = output02[0].split(" - ");
-//console.log(output03);
 if (pagerEmergencyMessage.match(/(S[0-9]{9,}).*/)) { 
   output04 = (output03[output03.length - 1] + " ");}
 else {
   output04 = output03[1].replace(/POSS PERSON TRAPPED |POSS PERSON TRAPPED\/FIRE /, "")}
-//console.log(output04);
 output05 = output03.slice(0, -1);
 
 jobTypeAndNote = output05.join(". ");
@@ -84,5 +74,3 @@ else {
   sayEmergency = (jobTypeAndNote + " at " + cleanAddress);}
 
 console.log(sayEmergency);
-
-
